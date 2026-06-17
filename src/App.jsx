@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { decisionTree, startNodeId } from './data/decisionTree.js'
 import QuestionCard from './components/QuestionCard.jsx'
 import ResultCard from './components/ResultCard.jsx'
@@ -33,6 +33,12 @@ export default function App() {
     setHistory((prev) => (prev.length > 1 ? prev.slice(0, -1) : prev))
   }
 
+  // Jump back to an earlier question to change that answer. `index` is the
+  // position of that question within `history`.
+  const goToStep = (index) => {
+    setHistory((prev) => prev.slice(0, index + 1))
+  }
+
   // Start over from the beginning.
   const restart = () => {
     setHistory([startNodeId])
@@ -40,14 +46,39 @@ export default function App() {
 
   const isResult = currentNode?.type === 'result'
 
+  // Build the trail of answers the customer has chosen so far. For each
+  // question we visited, find which option led to the next node. Derived
+  // purely from the history + the decision-tree data (no UI logic in here).
+  const selections = []
+  for (let i = 0; i < history.length - 1; i++) {
+    const node = decisionTree[history[i]]
+    if (node?.type === 'question') {
+      const option = (node.options || []).find((o) => o.next === history[i + 1])
+      selections.push({ answer: option?.label ?? '—', index: i })
+    }
+  }
+
   // Progress estimate: questions answered so far + how many more questions
   // remain on the longest path from here. Purely for the progress indicator.
   const answeredQuestions = history.filter(
     (id) => decisionTree[id]?.type === 'question',
   ).length
   const remaining = remainingDepth(currentId)
-  const estimatedTotal = (isResult ? answeredQuestions : answeredQuestions) + remaining
-  const currentStep = isResult ? answeredQuestions : answeredQuestions
+  const estimatedTotal = answeredQuestions + remaining
+  const currentStep = answeredQuestions
+
+  // Accessibility: when the step changes, move focus to the new card heading so
+  // keyboard and screen-reader users follow the flow. Skip the very first
+  // render so we don't yank focus on page load.
+  const headingRef = useRef(null)
+  const firstRender = useRef(true)
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false
+      return
+    }
+    headingRef.current?.focus()
+  }, [currentId])
 
   return (
     <div className="app">
@@ -79,9 +110,19 @@ export default function App() {
 
         {currentNode ? (
           isResult ? (
-            <ResultCard node={currentNode} onRestart={restart} />
+            <ResultCard
+              node={currentNode}
+              selections={selections}
+              onEditStep={goToStep}
+              onRestart={restart}
+              headingRef={headingRef}
+            />
           ) : (
-            <QuestionCard node={currentNode} onSelect={goToNode} />
+            <QuestionCard
+              node={currentNode}
+              onSelect={goToNode}
+              headingRef={headingRef}
+            />
           )
         ) : (
           <div className="card">

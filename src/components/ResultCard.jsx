@@ -14,23 +14,53 @@ import FuelBadge from './FuelBadge.jsx'
  *   - node.fuels                        -> list of fuel codes to display
  *
  * Props:
- *   node      {object}   a decision-tree node with type === 'result'
- *   onRestart {function} called when the customer wants to start over
+ *   node       {object}   a decision-tree node with type === 'result'
+ *   selections {array}    the answers chosen to get here ({ answer, index })
+ *   onEditStep {function} jump back to a question to change that answer
+ *   onRestart  {function} called when the customer wants to start over
+ *   headingRef {ref}      focused when the step changes (accessibility)
  */
-export default function ResultCard({ node, onRestart }) {
+export default function ResultCard({
+  node,
+  selections = [],
+  onEditStep,
+  onRestart,
+  headingRef,
+}) {
   const codes = node.fuels || []
 
   return (
     <div className="result">
       <div className="result__header">
         <p className="result__eyebrow">{node.tag || 'Recommended Fuel'}</p>
-        <h2 className="result__headline">
+        <h2 className="result__headline" ref={headingRef} tabIndex={-1}>
           {node.headline || 'Your VP Racing Fuel Recommendation'}
         </h2>
         {node.explanation && (
           <p className="result__explanation">{node.explanation}</p>
         )}
       </div>
+
+      {selections.length > 0 && (
+        <nav className="recap" aria-label="Your answers">
+          <span className="recap__label">Your answers</span>
+          <ol className="recap__list">
+            {selections.map((sel) => (
+              <li key={sel.index} className="recap__item">
+                <button
+                  type="button"
+                  className="recap__chip"
+                  onClick={() => onEditStep?.(sel.index)}
+                  title={`Change: ${sel.answer}`}
+                >
+                  {sel.answer}
+                </button>
+              </li>
+            ))}
+          </ol>
+          <span className="recap__hint">Tap an answer to change it</span>
+        </nav>
+      )}
 
       <div className="result__grid">
         {codes.map((code) => (

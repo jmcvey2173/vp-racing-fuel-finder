@@ -9,13 +9,16 @@
  * the data gives it. Edit questions/options in src/data/decisionTree.js.
  *
  * Props:
- *   node     {object}   a decision-tree node with type === 'question'
- *   onSelect {function} called with the chosen option's `next` node id
+ *   node       {object}   a decision-tree node with type === 'question'
+ *   onSelect   {function} called with the chosen option's `next` node id
+ *   headingRef {ref}      focused when the step changes (accessibility)
  */
-export default function QuestionCard({ node, onSelect }) {
+export default function QuestionCard({ node, onSelect, headingRef }) {
   return (
     <div className="card question-card">
-      <h2 className="question-card__title">{node.question}</h2>
+      <h2 className="question-card__title" ref={headingRef} tabIndex={-1}>
+        {node.question}
+      </h2>
       {node.helpText && <p className="question-card__help">{node.helpText}</p>}
 
       <div className="question-card__options">
