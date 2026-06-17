@@ -10,6 +10,10 @@
  *  There is NO branching logic hidden in the components — change the flow here
  *  and the website changes with it.
  *
+ *  This flow mirrors VP Racing's official "Motorcycle / ATV / UTV Tech Flow
+ *  Chart" exactly: Two-Stroke / Four-Stroke at the top, then category, then a
+ *  couple of follow-ups for drag bikes, ending in a recommended fuel or group.
+ *
  *  HOW THE TREE WORKS
  *  ------------------
  *  The flow is a set of "nodes". Each node has an `id` and a `type`.
@@ -21,8 +25,8 @@
  *
  *    type: "result"    -> the end of a path. Shows the recommended fuel(s).
  *                         `fuels` is a list of fuel CODES that must match keys
- *                         in fuelDatabase.js. `headline` and `explanation` are
- *                         optional friendly text shown on the result card.
+ *                         in fuelDatabase.js. `headline`, `explanation`, and
+ *                         the optional `tag` are friendly text for the card.
  *
  *  The wizard always begins at the node named in `startNodeId` below.
  *
@@ -48,12 +52,12 @@ export const startNodeId = 'engineType'
 
 export const decisionTree = {
   // ---------------------------------------------------------------------
-  // STEP 1 — Engine type
+  // STEP 1 — Engine type  (top of the flow chart)
   // ---------------------------------------------------------------------
   engineType: {
     id: 'engineType',
     type: 'question',
-    question: 'What type of engine / application?',
+    question: 'What type of engine?',
     helpText: 'Start with how your engine is built.',
     options: [
       { label: 'Two Stroke', next: 'twoStrokeCategory' },
@@ -68,7 +72,7 @@ export const decisionTree = {
     id: 'twoStrokeCategory',
     type: 'question',
     question: 'Which category are you racing?',
-    helpText: 'Pick the sanctioning body or level that fits you.',
+    helpText: 'Pick the level or sanctioning body that fits you.',
     options: [
       { label: 'Amateur', next: 'twoStrokeAmateur' },
       { label: 'AMA Pro SX & MX', next: 'twoStrokeAmaPro' },
@@ -79,9 +83,10 @@ export const decisionTree = {
   twoStrokeAmateur: {
     id: 'twoStrokeAmateur',
     type: 'result',
+    tag: 'Stock or Modified',
     headline: 'Amateur Two-Stroke Fuels',
     explanation:
-      'These fuels cover the most popular amateur two-stroke setups. Choose based on your compression, your budget, and any rules for your class.',
+      'Whether your engine is stock or modified, these cover the most popular amateur two-stroke setups. Choose based on your compression, your budget, and any rules for your class.',
     fuels: ['T2+', 'C12', 'MRX02', 'U4.4', 'VPR'],
   },
 
@@ -99,7 +104,7 @@ export const decisionTree = {
     type: 'result',
     headline: 'FIM Two-Stroke Fuel',
     explanation:
-      'For FIM-sanctioned competition, run an FIM-compliant fuel. Always confirm current compliance for your series and season.',
+      'For FIM-sanctioned competition, run the FIM-compliant fuel. Always confirm current compliance for your series and season.',
     fuels: ['VP Moto R'],
   },
 
@@ -117,7 +122,7 @@ export const decisionTree = {
       { label: 'AMA Pro SX & MX', next: 'fsAmaPro' },
       { label: 'Amateur SX & MX / Road Race', next: 'fsAmateur' },
       { label: 'MotoAmerica', next: 'fsMotoAmerica' },
-      { label: 'UTV', next: 'fsUtvRule' },
+      { label: 'UTV', next: 'fsUtv' },
       { label: 'Drag Bike', next: 'fsDragType' },
     ],
   },
@@ -125,6 +130,7 @@ export const decisionTree = {
   fsFlatTrack: {
     id: 'fsFlatTrack',
     type: 'result',
+    tag: 'Spec Fuel',
     headline: 'AMA Pro Flat Track Spec Fuel',
     explanation: 'The spec fuel for AMA Pro Flat Track competition.',
     fuels: ['C10'],
@@ -160,38 +166,20 @@ export const decisionTree = {
   fsMotoAmerica: {
     id: 'fsMotoAmerica',
     type: 'result',
+    tag: 'Spec Fuel',
     headline: 'MotoAmerica Spec Fuels',
     explanation: 'Spec fuel options for MotoAmerica road racing.',
     fuels: ['VP MGP R', 'T4+'],
   },
 
-  // --- UTV follow-up ---------------------------------------------------
-  fsUtvRule: {
-    id: 'fsUtvRule',
-    type: 'question',
-    question: 'Do you have a fuel rule?',
-    helpText: 'Some UTV classes require a specific or unleaded fuel.',
-    options: [
-      { label: 'Yes', next: 'fsUtvYes' },
-      { label: 'No', next: 'fsUtvNo' },
-    ],
-  },
-
-  fsUtvYes: {
-    id: 'fsUtvYes',
+  // --- UTV (no fuel-rule follow-up on the official chart) --------------
+  fsUtv: {
+    id: 'fsUtv',
     type: 'result',
-    headline: 'UTV Fuels (with a fuel rule)',
+    headline: 'UTV Fuels',
     explanation:
-      'These options work for UTV classes that enforce a fuel rule. Confirm your specific class requirements.',
+      'Strong options for UTV / side-by-side racing. Confirm any specific class requirements.',
     fuels: ['UTV96', 'MS109', 'C10'],
-  },
-
-  fsUtvNo: {
-    id: 'fsUtvNo',
-    type: 'result',
-    headline: 'UTV Fuels (no fuel rule)',
-    explanation: 'Strong UTV options when you are free to choose your fuel.',
-    fuels: ['UTV96', 'C10'],
   },
 
   // --- Drag bike follow-ups -------------------------------------------
@@ -217,17 +205,18 @@ export const decisionTree = {
   fsDragOtherRule: {
     id: 'fsDragOtherRule',
     type: 'question',
-    question: 'Are you running with or without a fuel rule?',
+    question: 'With or without a fuel rule?',
     helpText: 'A fuel rule limits what you are allowed to run.',
     options: [
-      { label: 'With fuel rule', next: 'fsDragWithRule' },
-      { label: 'Without fuel rule', next: 'fsDragNoRule' },
+      { label: 'With a fuel rule', next: 'fsDragWithRule' },
+      { label: 'Without a fuel rule (Outlaw)', next: 'fsDragNoRule' },
     ],
   },
 
   fsDragWithRule: {
     id: 'fsDragWithRule',
     type: 'result',
+    tag: 'Fuel Rule / Other',
     headline: 'Drag Bike Fuels (with a fuel rule)',
     explanation: 'Leaded options for drag classes that enforce a fuel rule.',
     fuels: ['C12', 'C14'],
@@ -236,9 +225,10 @@ export const decisionTree = {
   fsDragNoRule: {
     id: 'fsDragNoRule',
     type: 'result',
+    tag: 'Outlaw',
     headline: 'Drag Bike Fuels (no fuel rule)',
     explanation:
-      'Maximum-effort options when you are free to choose. Match to your engine build and tuning.',
+      'Maximum-effort options for no-fuel-rule / outlaw classes. Match to your engine build and tuning.',
     fuels: ['Q16', 'U4.4', 'MR12', 'MRX02'],
   },
 }

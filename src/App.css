@@ -1,0 +1,663 @@
+/* ==========================================================================
+   VP RACING FUEL FINDER — STYLES (App.css)
+   --------------------------------------------------------------------------
+   Plain CSS, mobile-first. Motorsports theme matched to VP Racing's brand:
+   near-black backgrounds, bold VP red, and white. Edit the color variables
+   below to re-skin the whole app.
+   ========================================================================== */
+
+:root {
+  /* --- VP Racing brand palette --- */
+  --vp-red: #e2231a;          /* signature VP red */
+  --vp-red-bright: #ff2a20;   /* hover / glow */
+  --vp-red-dark: #9e120c;     /* gradient base / pressed */
+  --steel: #8b97aa;           /* cool neutral for "unleaded" */
+
+  /* --- Surfaces (near-black, carbon feel) --- */
+  --bg: #0a0b0d;
+  --bg-elevated: #111317;
+  --bg-card: #16181d;
+  --bg-card-2: #1d2026;
+  --border: #282c34;
+  --border-strong: #3a3f4a;
+
+  /* --- Text --- */
+  --text: #f4f6f8;
+  --text-muted: #97a0ae;
+  --white: #ffffff;
+
+  /* --- Geometry --- */
+  --radius: 12px;
+  --radius-sm: 8px;
+  --maxw: 980px;
+  --shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
+  --shadow-red: 0 10px 30px rgba(226, 35, 26, 0.35);
+
+  /* --- Type --- */
+  --font-head: 'Oswald', 'Arial Narrow', 'Segoe UI', system-ui, sans-serif;
+  --font-body: 'Barlow', 'Segoe UI', Roboto, system-ui, -apple-system, Helvetica,
+    Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg);
+  background-image:
+    /* red track glow */
+    radial-gradient(1100px 520px at 50% -12%, rgba(226, 35, 26, 0.22), transparent 60%),
+    radial-gradient(900px 480px at 110% 0%, rgba(226, 35, 26, 0.08), transparent 55%),
+    /* faint carbon-fiber weave */
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.014) 0 2px, transparent 2px 4px),
+    repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.014) 0 2px, transparent 2px 4px);
+  color: var(--text);
+  font-family: var(--font-body);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 22px 16px 60px;
+}
+
+/* Shared heading treatment — condensed, uppercase, motorsport slant. */
+.hero__headline,
+.result__headline,
+.question-card__title,
+.hero__brand-text {
+  font-family: var(--font-head);
+  text-transform: uppercase;
+}
+
+/* ---------------------------------------------------------------- HERO --- */
+.hero {
+  position: relative;
+  text-align: center;
+  padding: 18px 0 30px;
+}
+
+/* Diagonal red "speed" slashes behind the hero. */
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 8px;
+  right: -40px;
+  width: 220px;
+  height: 130px;
+  background: repeating-linear-gradient(
+    -24deg,
+    var(--vp-red) 0 8px,
+    transparent 8px 22px
+  );
+  opacity: 0.16;
+  transform: skewX(-12deg);
+  pointer-events: none;
+}
+
+.hero__brand {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.hero__logo {
+  display: block;
+  width: 132px;
+  height: auto;
+  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.5));
+}
+
+.hero__eyebrow {
+  display: block;
+  font-family: var(--font-head);
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--vp-red);
+  margin: 0 0 8px;
+}
+
+.hero__headline {
+  font-size: 2.1rem;
+  line-height: 1.02;
+  margin: 0 0 12px;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 0.5px;
+  color: var(--white);
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.5);
+}
+
+.hero__subhead {
+  margin: 0 auto;
+  max-width: 560px;
+  color: var(--text-muted);
+  font-size: 1.05rem;
+}
+
+/* Thin checkered-flag accent strip. */
+.checker-strip {
+  height: 8px;
+  margin: 20px auto 0;
+  max-width: 240px;
+  border-radius: 99px;
+  background-image:
+    repeating-conic-gradient(var(--white) 0% 25%, #000 0% 50%);
+  background-size: 14px 14px;
+  opacity: 0.55;
+}
+
+/* -------------------------------------------------------------- WIZARD --- */
+.wizard {
+  position: relative;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--vp-red);
+  border-radius: var(--radius);
+  padding: 22px 18px;
+  box-shadow: var(--shadow);
+}
+
+/* ------------------------------------------------------------ PROGRESS --- */
+.progress {
+  margin-bottom: 24px;
+}
+
+.progress__labels {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-head);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+  margin-bottom: 9px;
+}
+
+.progress__step {
+  font-weight: 600;
+  color: var(--white);
+}
+
+.progress__track {
+  position: relative;
+  height: 8px;
+  background: #000;
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.progress__fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--vp-red-dark), var(--vp-red), var(--vp-red-bright));
+  box-shadow: 0 0 14px rgba(226, 35, 26, 0.6);
+  transition: width 0.35s ease;
+}
+
+/* ----------------------------------------------------------------- CARD -- */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px;
+}
+
+/* ------------------------------------------------------- QUESTION CARD --- */
+.question-card__title {
+  font-size: 1.55rem;
+  line-height: 1.1;
+  margin: 0 0 6px;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 0.4px;
+}
+
+.question-card__help {
+  margin: 0 0 18px;
+  color: var(--text-muted);
+}
+
+.question-card__options {
+  display: grid;
+  gap: 12px;
+}
+
+.option-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  text-align: left;
+  padding: 17px 18px 17px 22px;
+  font-family: var(--font-body);
+  font-size: 1.08rem;
+  font-weight: 600;
+  color: var(--white);
+  background: linear-gradient(180deg, #1f232c, #181b22);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.08s ease, border-color 0.15s ease,
+    box-shadow 0.15s ease, background 0.15s ease;
+}
+
+/* Red accent bar that grows on hover (left edge). */
+.option-button::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--vp-red);
+  transform: scaleY(0);
+  transform-origin: center;
+  transition: transform 0.18s ease;
+}
+
+.option-button:hover {
+  border-color: var(--vp-red);
+  background: linear-gradient(180deg, #23272f, #1a1e26);
+  box-shadow: var(--shadow-red);
+}
+
+.option-button:hover::before {
+  transform: scaleY(1);
+}
+
+.option-button:active {
+  transform: translateY(1px);
+}
+
+.option-button__arrow {
+  color: var(--vp-red);
+  font-size: 1.25rem;
+  font-weight: 700;
+  transition: transform 0.18s ease;
+}
+
+.option-button:hover .option-button__arrow {
+  transform: translateX(4px);
+}
+
+/* ----------------------------------------------------------- WIZARD NAV -- */
+.wizard__nav {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.nav-button {
+  flex: 1;
+  padding: 12px 16px;
+  font-family: var(--font-head);
+  font-size: 0.92rem;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text);
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+
+.nav-button:hover:not(:disabled) {
+  border-color: var(--vp-red);
+  color: var(--white);
+  background: rgba(226, 35, 26, 0.08);
+}
+
+.nav-button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* --------------------------------------------------------------- RESULT -- */
+.result__header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.result__eyebrow {
+  font-family: var(--font-head);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--vp-red);
+  margin: 0 0 8px;
+}
+
+.result__headline {
+  font-size: 1.75rem;
+  line-height: 1.05;
+  margin: 0 0 10px;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 0.4px;
+  color: var(--white);
+}
+
+.result__explanation {
+  color: var(--text-muted);
+  margin: 0 auto;
+  max-width: 600px;
+}
+
+.result__grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr;
+}
+
+/* ------------------------------------------------------------ FUEL CARD -- */
+.fuel-card {
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, var(--bg-card-2), var(--bg-card));
+  border-top: 3px solid var(--vp-red);
+  transition: transform 0.12s ease, box-shadow 0.15s ease;
+}
+
+.fuel-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-red);
+}
+
+.fuel-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.fuel-card__name {
+  font-family: var(--font-head);
+  text-transform: uppercase;
+  font-size: 1.25rem;
+  margin: 0;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.fuel-card__code {
+  font-family: var(--font-head);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  color: var(--white);
+  background: linear-gradient(180deg, var(--vp-red), var(--vp-red-dark));
+  border: none;
+  padding: 4px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.fuel-card__desc {
+  margin: 0 0 14px;
+  color: var(--text);
+}
+
+.fuel-card__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.fuel-card__specs {
+  margin: 0;
+  display: grid;
+  gap: 12px;
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+}
+
+.fuel-card__spec dt {
+  font-family: var(--font-head);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--vp-red);
+  font-weight: 500;
+  margin-bottom: 3px;
+}
+
+.fuel-card__spec dd {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--text);
+}
+
+/* Headline octane block. */
+.fuel-card__octane {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  background: rgba(226, 35, 26, 0.08);
+  border: 1px solid rgba(226, 35, 26, 0.35);
+  border-radius: var(--radius-sm);
+}
+
+.fuel-card__octane-value {
+  font-family: var(--font-head);
+  font-size: 1.9rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--white);
+}
+
+.fuel-card__octane-label {
+  font-family: var(--font-head);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--vp-red);
+}
+
+/* Compact 2-column spec grid (MON, RON, gravity, RVP, oxygen, color). */
+.fuel-card__spec-grid {
+  margin: 0 0 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 16px;
+}
+
+.fuel-card__spec-grid .fuel-card__spec dd {
+  font-family: var(--font-head);
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+/* Fuel color swatch + label. */
+.fuel-color {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.fuel-color__dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  flex: 0 0 auto;
+}
+
+/* ------------------------------------------------------------- BADGES ---- */
+.fuel-badge {
+  display: inline-block;
+  font-family: var(--font-head);
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 4px 11px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+}
+
+.fuel-badge--red {
+  background: rgba(226, 35, 26, 0.16);
+  border-color: rgba(226, 35, 26, 0.55);
+  color: #ff8a82;
+}
+
+.fuel-badge--blue {
+  /* "Unleaded" — cool steel neutral, keeps the palette red/black/white. */
+  background: rgba(139, 151, 170, 0.14);
+  border-color: rgba(139, 151, 170, 0.5);
+  color: #c4cdda;
+}
+
+.fuel-badge--neutral {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-muted);
+}
+
+/* --------------------------------------------------------------- CTAs ---- */
+.result__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 26px 0 18px;
+}
+
+.cta-button {
+  display: inline-block;
+  text-align: center;
+  padding: 15px 22px;
+  font-family: var(--font-head);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: transform 0.08s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.cta-button--primary {
+  background: linear-gradient(180deg, var(--vp-red), var(--vp-red-dark));
+  color: var(--white);
+  box-shadow: 0 8px 22px rgba(226, 35, 26, 0.4);
+}
+
+.cta-button--primary:hover {
+  background: linear-gradient(180deg, var(--vp-red-bright), var(--vp-red));
+  box-shadow: 0 10px 30px rgba(226, 35, 26, 0.6);
+}
+
+.cta-button--ghost {
+  background: transparent;
+  color: var(--white);
+  border-color: var(--border-strong);
+}
+
+.cta-button--ghost:hover {
+  border-color: var(--vp-red);
+  background: rgba(226, 35, 26, 0.08);
+}
+
+.cta-button:active {
+  transform: translateY(1px);
+}
+
+/* ---------------------------------------------------------- DISCLAIMER --- */
+.disclaimer {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--vp-red);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  margin: 0;
+}
+
+.disclaimer strong {
+  color: var(--white);
+}
+
+/* ------------------------------------------------------------- FOOTER ---- */
+.site-footer {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.disclaimer--footer {
+  text-align: left;
+  margin-bottom: 14px;
+}
+
+.site-footer__note {
+  font-family: var(--font-head);
+  font-size: 0.74rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* ------------------------------------------------------- DESKTOP TWEAKS -- */
+@media (min-width: 720px) {
+  .app {
+    padding: 44px 24px 80px;
+  }
+
+  .hero__headline {
+    font-size: 3rem;
+  }
+
+  .hero::before {
+    width: 320px;
+    height: 170px;
+    right: -30px;
+  }
+
+  .wizard {
+    padding: 34px 32px;
+  }
+
+  .result__headline {
+    font-size: 2.2rem;
+  }
+
+  .result__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .result__actions {
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .cta-button {
+    min-width: 230px;
+  }
+}

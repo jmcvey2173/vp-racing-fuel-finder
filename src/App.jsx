@@ -3,6 +3,7 @@ import { decisionTree, startNodeId } from './data/decisionTree.js'
 import QuestionCard from './components/QuestionCard.jsx'
 import ResultCard from './components/ResultCard.jsx'
 import ProgressBar from './components/ProgressBar.jsx'
+import vpLogo from './assets/vp-racing-logo.png'
 
 /**
  * App
@@ -52,14 +53,21 @@ export default function App() {
     <div className="app">
       <header className="hero">
         <div className="hero__brand">
-          <span className="hero__brand-mark">VP</span>
-          <span className="hero__brand-text">RACING&nbsp;FUELS</span>
+          <img
+            className="hero__logo"
+            src={vpLogo}
+            alt="VP Racing Fuels"
+            width="150"
+            height="125"
+          />
         </div>
-        <h1 className="hero__headline">Find the Right VP Racing Fuel</h1>
+        <p className="hero__eyebrow">Race Fuel Finder</p>
+        <h1 className="hero__headline">Find Your Winning Fuel</h1>
         <p className="hero__subhead">
-          Answer a few quick questions and get a fuel recommendation for your
-          motorcycle, ATV, UTV, or drag bike.
+          Answer a few quick questions and get a VP Racing fuel recommendation
+          dialed in for your motorcycle, ATV, UTV, or drag bike.
         </p>
+        <div className="checker-strip" aria-hidden="true" />
       </header>
 
       <main className="wizard">
@@ -100,10 +108,10 @@ export default function App() {
 
       <footer className="site-footer">
         <p className="disclaimer disclaimer--footer">
-          This Fuel Finder is a guide only. Final fuel selection should be
-          confirmed with VP Racing, your race series rules, or your engine
-          builder. Sandbox demo — fuel specs are placeholders pending
-          confirmation.
+          This Fuel Finder is a guide only. Specs are from VP Racing's
+          Motorcycle / ATV / UTV tech chart. Final fuel selection and current
+          class/series compliance should be confirmed with VP Racing or your
+          engine builder.
         </p>
         <p className="site-footer__note">
           VP Racing Fuel Finder · Prototype · Not affiliated with checkout or
