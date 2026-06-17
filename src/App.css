@@ -466,6 +466,64 @@ body {
   color: var(--text);
 }
 
+/* Headline octane block. */
+.fuel-card__octane {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  background: rgba(226, 35, 26, 0.08);
+  border: 1px solid rgba(226, 35, 26, 0.35);
+  border-radius: var(--radius-sm);
+}
+
+.fuel-card__octane-value {
+  font-family: var(--font-head);
+  font-size: 1.9rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--white);
+}
+
+.fuel-card__octane-label {
+  font-family: var(--font-head);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--vp-red);
+}
+
+/* Compact 2-column spec grid (MON, RON, gravity, RVP, oxygen, color). */
+.fuel-card__spec-grid {
+  margin: 0 0 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 16px;
+}
+
+.fuel-card__spec-grid .fuel-card__spec dd {
+  font-family: var(--font-head);
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+/* Fuel color swatch + label. */
+.fuel-color {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.fuel-color__dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  flex: 0 0 auto;
+}
+
 /* ------------------------------------------------------------- BADGES ---- */
 .fuel-badge {
   display: inline-block;

@@ -102,10 +102,10 @@ export default function App() {
 
       <footer className="site-footer">
         <p className="disclaimer disclaimer--footer">
-          This Fuel Finder is a guide only. Final fuel selection should be
-          confirmed with VP Racing, your race series rules, or your engine
-          builder. Sandbox demo — fuel specs are placeholders pending
-          confirmation.
+          This Fuel Finder is a guide only. Specs are from VP Racing's
+          Motorcycle / ATV / UTV tech chart. Final fuel selection and current
+          class/series compliance should be confirmed with VP Racing or your
+          engine builder.
         </p>
         <p className="site-footer__note">
           VP Racing Fuel Finder · Prototype · Not affiliated with checkout or

@@ -5,10 +5,12 @@ import FuelBadge from './FuelBadge.jsx'
  * ResultCard
  * ----------
  * The end of a path. Takes a "result" node from the decision tree, looks each
- * fuel CODE up in fuelDatabase.js, and renders a card per recommended fuel.
+ * fuel CODE up in fuelDatabase.js, and renders a card per recommended fuel
+ * with its real VP Racing specs.
  *
  * All wording comes from the data:
- *   - node.headline / node.explanation  -> friendly intro (optional)
+ *   - node.tag (optional)               -> small eyebrow (e.g. "Spec Fuel")
+ *   - node.headline / node.explanation  -> friendly intro
  *   - node.fuels                        -> list of fuel codes to display
  *
  * Props:
@@ -21,7 +23,7 @@ export default function ResultCard({ node, onRestart }) {
   return (
     <div className="result">
       <div className="result__header">
-        <p className="result__eyebrow">Recommended Fuel</p>
+        <p className="result__eyebrow">{node.tag || 'Recommended Fuel'}</p>
         <h2 className="result__headline">
           {node.headline || 'Your VP Racing Fuel Recommendation'}
         </h2>
@@ -55,23 +57,40 @@ export default function ResultCard({ node, onRestart }) {
       </div>
 
       <p className="disclaimer">
-        <strong>Guide only.</strong> This recommendation is a starting point.
-        Confirm your final fuel choice with VP Racing, your race series rules,
-        or your engine builder. Specs shown here are placeholders for this
-        sandbox demo.
+        <strong>Guide only.</strong> Specs are from VP Racing's Motorcycle /
+        ATV / UTV tech chart. Confirm your final fuel choice and current
+        class/series compliance with VP Racing or your engine builder.
       </p>
     </div>
   )
 }
 
+/* Map the chart's fuel colors to a swatch color. "Colorless" shows a clear
+   dot; anything unknown shows nothing. */
+const COLOR_SWATCH = {
+  Yellow: '#f2c200',
+  Green: '#36b24a',
+  'Light Green': '#8fd14f',
+  Blue: '#2f86e0',
+  Orange: '#f08a24',
+  Red: '#e2231a',
+  Colorless: 'transparent',
+  'Amber to Yellow': 'linear-gradient(135deg, #f0a83a, #f2c200)',
+}
+
 /**
- * FuelCard — internal helper that renders one fuel's name, description,
- * attribute badges, and spec list. Kept in this file because it is only used
- * by ResultCard.
+ * FuelCard — internal helper that renders one fuel's name, badges, the
+ * headline (R+M)/2 octane, a compact spec grid, and the application note.
  */
 function FuelCard({ code, fuel }) {
-  const leadTone = /unleaded/i.test(fuel.leadedUnleaded) ? 'blue' : 'red'
-  const isOxygenated = /^yes/i.test(fuel.oxygenated)
+  const typeTone =
+    fuel.type === 'Leaded' ? 'red' : fuel.type === 'Unleaded' ? 'blue' : 'neutral'
+
+  // Oxygenated badge only when there is a meaningful, non-zero value.
+  const oxy = (fuel.oxygenated || '').trim()
+  const isOxygenated = oxy && oxy !== '0%' && oxy !== '—' && oxy !== 'TBD'
+
+  const swatch = COLOR_SWATCH[fuel.color]
 
   return (
     <article className="card fuel-card">
@@ -80,27 +99,63 @@ function FuelCard({ code, fuel }) {
         <span className="fuel-card__code">{code}</span>
       </div>
 
+      <div className="fuel-card__badges">
+        <FuelBadge label={fuel.type} tone={typeTone} />
+        {isOxygenated && <FuelBadge label={`Oxygenated ${oxy}`} tone="red" />}
+      </div>
+
       <p className="fuel-card__desc">{fuel.shortDescription}</p>
 
-      <div className="fuel-card__badges">
-        <FuelBadge label={fuel.leadedUnleaded} tone={leadTone} />
-        {isOxygenated && <FuelBadge label="Oxygenated" tone="red" />}
+      <div className="fuel-card__octane">
+        <span className="fuel-card__octane-value">{fuel.octaneRM2}</span>
+        <span className="fuel-card__octane-label">Octane (R+M)/2</span>
       </div>
+
+      <dl className="fuel-card__spec-grid">
+        <Spec label="MON" value={fuel.mon} />
+        <Spec label="RON" value={fuel.ron} />
+        <Spec label="Spec Gravity" value={fuel.specificGravity} />
+        <Spec label="RVP" value={fuel.rvp} />
+        <Spec label="Oxygen" value={fuel.oxygenated} />
+        <Spec
+          label="Color"
+          value={
+            <span className="fuel-color">
+              {swatch !== undefined && (
+                <span
+                  className="fuel-color__dot"
+                  style={{ background: swatch }}
+                  aria-hidden="true"
+                />
+              )}
+              {fuel.color}
+            </span>
+          }
+        />
+      </dl>
 
       <dl className="fuel-card__specs">
         <div className="fuel-card__spec">
           <dt>Best For</dt>
           <dd>{fuel.bestFor}</dd>
         </div>
-        <div className="fuel-card__spec">
-          <dt>Oxygenated</dt>
-          <dd>{fuel.oxygenated}</dd>
-        </div>
-        <div className="fuel-card__spec">
-          <dt>Notes</dt>
-          <dd>{fuel.notes}</dd>
-        </div>
+        {fuel.notes ? (
+          <div className="fuel-card__spec">
+            <dt>Notes</dt>
+            <dd>{fuel.notes}</dd>
+          </div>
+        ) : null}
       </dl>
     </article>
+  )
+}
+
+/** One labelled spec cell in the compact grid. */
+function Spec({ label, value }) {
+  return (
+    <div className="fuel-card__spec">
+      <dt>{label}</dt>
+      <dd>{value}</dd>
+    </div>
   )
 }
