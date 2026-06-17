@@ -4,4 +4,8 @@ import react from '@vitejs/plugin-react'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  // Relative asset paths so the built bundle works when hosted from any
+  // folder or sub-path (not just the server root). Handy for dropping the
+  // dist/ output onto an internal host.
+  base: './',
 })
