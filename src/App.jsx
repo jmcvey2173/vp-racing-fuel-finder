@@ -3,6 +3,7 @@ import { decisionTree, startNodeId } from './data/decisionTree.js'
 import QuestionCard from './components/QuestionCard.jsx'
 import ResultCard from './components/ResultCard.jsx'
 import ProgressBar from './components/ProgressBar.jsx'
+import vpLogo from './assets/vp-racing-logo.png'
 
 /**
  * App
@@ -52,8 +53,13 @@ export default function App() {
     <div className="app">
       <header className="hero">
         <div className="hero__brand">
-          <span className="hero__brand-mark">VP</span>
-          <span className="hero__brand-text">RACING&nbsp;FUELS</span>
+          <img
+            className="hero__logo"
+            src={vpLogo}
+            alt="VP Racing Fuels"
+            width="150"
+            height="125"
+          />
         </div>
         <p className="hero__eyebrow">Race Fuel Finder</p>
         <h1 className="hero__headline">Find Your Winning Fuel</h1>

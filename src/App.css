@@ -108,32 +108,15 @@ body {
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 0;
-  margin-bottom: 22px;
-  border-radius: var(--radius-sm);
-  overflow: hidden;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+  justify-content: center;
+  margin-bottom: 18px;
 }
 
-.hero__brand-mark {
-  background: linear-gradient(180deg, var(--vp-red), var(--vp-red-dark));
-  color: var(--white);
-  font-family: var(--font-head);
-  font-weight: 700;
-  font-size: 1.25rem;
-  padding: 8px 12px;
-  letter-spacing: 1px;
-  line-height: 1;
-}
-
-.hero__brand-text {
-  font-weight: 600;
-  letter-spacing: 3px;
-  font-size: 1rem;
-  color: var(--white);
-  background: #000;
-  padding: 9px 14px 9px 12px;
-  line-height: 1;
+.hero__logo {
+  display: block;
+  width: 132px;
+  height: auto;
+  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.5));
 }
 
 .hero__eyebrow {
