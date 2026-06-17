@@ -359,6 +359,75 @@ body {
   max-width: 600px;
 }
 
+/* ----------------------------------------------------- ANSWER RECAP ------ */
+.recap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 22px;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.recap__label {
+  font-family: var(--font-head);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.recap__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
+
+.recap__item {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Chevron separator between answers. */
+.recap__item:not(:last-child)::after {
+  content: '›';
+  color: var(--vp-red);
+  font-weight: 700;
+  margin-left: 6px;
+}
+
+.recap__chip {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--white);
+  background: var(--bg-card-2);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  padding: 5px 13px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.recap__chip:hover {
+  border-color: var(--vp-red);
+  background: rgba(226, 35, 26, 0.1);
+}
+
+.recap__hint {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+}
+
 .result__grid {
   display: grid;
   gap: 16px;
@@ -618,6 +687,33 @@ body {
   text-transform: uppercase;
   color: var(--text-muted);
   margin: 0;
+}
+
+/* --------------------------------------------------- A11Y / MOTION ------- */
+/* Card headings receive focus on each step (for keyboard / screen readers).
+   Suppress the outline on these programmatically-focused headings — the
+   heading text itself provides the context. Interactive controls keep their
+   normal focus ring. */
+.question-card__title:focus,
+.result__headline:focus {
+  outline: none;
+}
+
+/* Clear keyboard-focus ring for interactive controls. */
+.option-button:focus-visible,
+.nav-button:focus-visible,
+.cta-button:focus-visible,
+.recap__chip:focus-visible {
+  outline: 2px solid var(--vp-blue-light, #2f86e0);
+  outline-offset: 2px;
+}
+
+/* Respect users who prefer reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
 }
 
 /* ------------------------------------------------------- DESKTOP TWEAKS -- */
