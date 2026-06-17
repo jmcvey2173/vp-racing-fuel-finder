@@ -55,11 +55,13 @@ export default function App() {
           <span className="hero__brand-mark">VP</span>
           <span className="hero__brand-text">RACING&nbsp;FUELS</span>
         </div>
-        <h1 className="hero__headline">Find the Right VP Racing Fuel</h1>
+        <p className="hero__eyebrow">Race Fuel Finder</p>
+        <h1 className="hero__headline">Find Your Winning Fuel</h1>
         <p className="hero__subhead">
-          Answer a few quick questions and get a fuel recommendation for your
-          motorcycle, ATV, UTV, or drag bike.
+          Answer a few quick questions and get a VP Racing fuel recommendation
+          dialed in for your motorcycle, ATV, UTV, or drag bike.
         </p>
+        <div className="checker-strip" aria-hidden="true" />
       </header>
 
       <main className="wizard">
