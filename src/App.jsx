@@ -202,10 +202,13 @@ export default function App() {
 
       <footer className="site-footer">
         <p className="disclaimer disclaimer--footer">
-          This Fuel Finder is a guide only. Specs are from VP Racing's
-          Motorcycle / ATV / UTV tech chart. Final fuel selection and current
-          class/series compliance should be confirmed with VP Racing or your
-          engine builder.
+          These are <strong>recommendations only</strong>. For any technical
+          questions about your engine, we always recommend talking to a VP
+          Racing technical team expert at{' '}
+          <a className="disclaimer__link" href="mailto:tech@vpracingfuels.com">
+            tech@vpracingfuels.com
+          </a>
+          .
         </p>
         <p className="site-footer__note">
           VP Racing Fuel Finder · Prototype · Not affiliated with checkout or
