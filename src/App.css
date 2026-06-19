@@ -851,7 +851,9 @@ body {
    heading text itself provides the context. Interactive controls keep their
    normal focus ring. */
 .question-card__title:focus,
-.result__headline:focus {
+.result__headline:focus,
+.category-picker__title:focus,
+.coming-soon__title:focus {
   outline: none;
 }
 
@@ -859,7 +861,9 @@ body {
 .option-button:focus-visible,
 .nav-button:focus-visible,
 .cta-button:focus-visible,
-.recap__chip:focus-visible {
+.recap__chip:focus-visible,
+.category-card:focus-visible,
+.back-link:focus-visible {
   outline: 2px solid var(--vp-blue-light, #2f86e0);
   outline-offset: 2px;
 }

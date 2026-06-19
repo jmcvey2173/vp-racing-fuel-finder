@@ -78,13 +78,15 @@ export default function App() {
     }
   }
 
-  // Progress estimate (questions answered + longest path remaining).
+  // Progress estimate. `answeredQuestions` counts every question visited
+  // (including the current one); `remainingDepth(currentId)` also counts the
+  // current question, so subtract 1 to avoid double-counting it in the total.
   const answeredQuestions = tree
     ? history.filter((id) => tree[id]?.type === 'question').length
     : 0
   const remaining = tree ? remainingDepth(tree, currentId) : 0
-  const estimatedTotal = answeredQuestions + remaining
   const currentStep = answeredQuestions
+  const estimatedTotal = Math.max(answeredQuestions - 1, 0) + remaining
 
   const showWizard = category?.status === 'available' && currentNode
   const showComingSoon = category && category.status !== 'available'
